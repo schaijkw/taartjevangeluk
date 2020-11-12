@@ -10,10 +10,10 @@ title: Jekyll demo
 {% assign i = 0  %}
 {% for image in image_files %}
  
-<img src="{{ image.path }}" alt="image" />
  {{ i }}
  
-{% assign i = i | plus 1  %}
+ {{ image }}
+ 
  {% endfor %}
 
  </div>
