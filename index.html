@@ -2,15 +2,52 @@
 layout: default
 title: Jekyll demo
 ---
-<div class="photos">
+<div class="row">
+{% assign image_files = site.static_files | where: image.path contains 'images/gallery' %}
 
-{% for image in site.static_files %}
 
-    {% if image.path contains 'images/gallery' %}
-        <img src="{{ image.path }}" alt="image" />
-    {% endif %}
-        
+<div class="column">
+{% assign i = 0  %}
+{% for image in image_files %}
+{% assign sum = i | modulo 4 %}
+{% if sum == 0 %}
+<img src="{{ image.path }}" alt="image" />
+{% endif %}  
+{% assign i = i | plus 1  %}
 {% endfor %}
+</div>
 
-</div><!-- /.photos -->
+<div class="column">
+{% assign i = 0  %}
+{% for image in image_files %}
+{% assign sum = i | modulo 4 %}
+{% if sum == 1 %}
+<img src="{{ image.path }}" alt="image" />
+{% endif %}  
+{% assign i = i | plus 1  %}
+{% endfor %}
+</div>
 
+<div class="column">
+{% assign i = 0  %}
+{% for image in image_files %}
+{% assign sum = i | modulo 4 %}
+{% if sum == 2 %}
+<img src="{{ image.path }}" alt="image" />
+{% endif %}  
+{% assign i = i | plus 1  %}
+{% endfor %}
+</div>
+
+<div class="column">
+{% assign i = 0  %}
+{% for image in image_files %}
+{% assign sum = i | modulo 4 %}
+{% if sum == 3 %}
+<img src="{{ image.path }}" alt="image" />
+{% endif %}  
+{% assign i = i | plus 1  %}
+{% endfor %}
+</div>
+
+</div>
