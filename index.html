@@ -6,7 +6,7 @@ title: Jekyll demo
 
 {% for image in site.static_files %}
 
-    {% if image.path contains 'images' %}
+    {% if image.path contains 'images/gallery' %}
         <img src="{{ image.path }}" alt="image" />
     {% endif %}
         
