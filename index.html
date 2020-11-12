@@ -6,10 +6,12 @@ title: Jekyll demo
 
 {% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/gallery'" %}
 
-
 <div class="column">
 {% assign i = 0  %}
 {% for image in image_files %}
+ 
+ 
+{% comment %}
 {% assign sum = i | modulo 4 %}
 {% if sum == 0 %}
 <img src="{{ image.path }}" alt="image" />
@@ -49,6 +51,8 @@ title: Jekyll demo
 {% endif %}  
 {% assign i = i | plus 1  %}
 {% endfor %}
-</div>
+
+ {% endcomment %}
+ </div>
  
 </div>
