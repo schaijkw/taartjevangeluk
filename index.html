@@ -4,7 +4,7 @@ title: Jekyll demo
 ---
 <div class="row">
 
-{% assign image_files = site.static_files | where: path contains 'images/gallery' %}
+{% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/gallery'" %}
 
 {{ image_files.size }}
 
