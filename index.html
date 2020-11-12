@@ -4,8 +4,8 @@ title: Jekyll demo
 ---
 <div class="row">
 
-{% assign image_files = site.static_files  %}
+{% assign image_files = site.static_files | where: path contains 'images/gallery' %}
 
- {{ image_files.size }}
+{{ image_files.size }}
 
 </div>
