@@ -1,5 +1,14 @@
+---
+layout: default
+title: Jekyll demo
+---
+<div class="photos">
+
 {% for image in site.static_files %}
     {% if image.path contains 'images/slider' %}
         <img src="{{ site.baseurl }}{{ image.path }}" alt="image" />
     {% endif %}
 {% endfor %}
+
+</div><!-- /.photos -->
+
