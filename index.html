@@ -9,7 +9,7 @@ title: Jekyll demo
 <div class="column">
 {% assign i = 0  %}
 {% for image in image_files %}
-{% assign sum = i | modulo 4 %}
+{% assign sum = {{ i | modulo 4 }} %}
  {{ i }}
  
  {{ image }}
