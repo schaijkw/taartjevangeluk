@@ -5,7 +5,11 @@ title: Jekyll demo
 <div class="photos">
 
 {% for image in site.static_files %}
-        <img src="{{ site.baseurl }}{{ image.path }}" alt="image" />
+
+    {% if image.path contains 'images' %}
+        <img src="{{ image.path }}" alt="image" />
+    {% endif %}
+        
 {% endfor %}
 
 </div><!-- /.photos -->
