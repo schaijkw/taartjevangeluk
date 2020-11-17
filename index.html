@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Jekyll demo
+title: Taartje van Geluk
 ---
 <div class="row">
 
-{% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/gallery'" %}
+{% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images'" %}
 
 <div class="column">
 {% assign i = 0  %}
