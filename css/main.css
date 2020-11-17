@@ -19,4 +19,9 @@ background-color: #fcf4e4
   vertical-align: middle;
 }
 
+img {
+max-width: 250px;
+max-height: 250px;
+}
+
  	
