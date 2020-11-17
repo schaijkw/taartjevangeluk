@@ -4,7 +4,7 @@ title: Taartje van Geluk
 ---
 <div class="row">
 
-{% assign image_files = site.static_files | where_exp: "image", "image.path contains 'Verjaardag'" %}
+{% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/thumb'" %}
 
 <div class="column">
 {% assign i = 0  %}
