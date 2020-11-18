@@ -1,27 +1,38 @@
+:root {
+  --bg-color: #fcf4e4;
+
+  --border-radius: 8px;
+  --border-radius-large: 8px;
+  --border-radius-xl: 12px;
+}
+
 body {
-background-color: #fcf4e4
+background: var(--bg-color)
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
+.gallery-container {
+  text-align: center;
+  margin: auto;
+  width: 80%;
 }
 
-/* Create two equal columns that sits next to each other */
-.column {
-  flex: 50%;
-  padding: 0 4px;
+@media (min-width: 720px) {
+  .gallery-container {
+    text-align: center;
+  }
 }
 
-.column img {
-  margin-top: 8px;
-  vertical-align: middle;
+.gallery-image {
+  margin: 2px;
+  border-radius: var(--border-radius);
 }
 
 img {
-max-width: 250px;
-max-height: 250px;
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
 }
 
- 	
+img a {
+  margin: 0 auto;
+}

@@ -2,51 +2,9 @@
 layout: default
 title: Taartje van Geluk
 ---
-<div class="row">
-
-{% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/thumb'" %}
-
-<div class="column">
-{% assign i = 0  %}
-{% for image in image_files %}
-{% assign sum = i | modulo: 4 %}
-{% if sum == 0 %}
-<img src="{{ image.path }}" alt="image" />
-{% endif %}  
-{% assign i = i | plus: 1  %}
-{% endfor %}
-</div>
-
-<div class="column">
-{% assign i = 0  %}
-{% for image in image_files %}
-{% assign sum = i | modulo: 4 %}
-{% if sum == 1 %}
-<img src="{{ image.path }}" alt="image" />
-{% endif %}  
-{% assign i = i | plus: 1  %}
-{% endfor %}
-</div>
-
-<div class="column">
-{% assign i = 0  %}
-{% for image in image_files %}
-{% assign sum = i | modulo: 4 %}
-{% if sum == 2 %}
-<img src="{{ image.path }}" alt="image" />
-{% endif %}  
-{% assign i = i | plus: 1  %}
-{% endfor %}
-</div>
-
-<div class="column">
-{% assign i = 0  %}
-{% for image in image_files %}
-{% assign sum = i | modulo: 4 %}
-{% if sum == 3 %}
-<img src="{{ image.path }}" alt="image" />
-{% endif %}  
-{% assign i = i | plus: 1  %}
-{% endfor %}
-</div> 
+<div class="gallery-container"> 
+    {% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/thumb'" %}
+    {% for image in image_files %}
+    <a href="{{ image.path | replace: 'images/thumb', 'images/web' }}" data-lightbox="taartjevangeluk" ><img class="gallery-image" src="{{ image.path }}" /></a>
+    {% endfor %}
 </div>
