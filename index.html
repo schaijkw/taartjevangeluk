@@ -2,9 +2,20 @@
 layout: default
 title: Taartje van Geluk
 ---
+<!-- 
 <div class="gallery-container"> 
     {% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/thumb'" %}
     {% for image in image_files %}
     <a href="{{ image.path | replace: 'images/thumb', 'images/web' }}" data-lightbox="taartjevangeluk" ><img class="gallery-image" src="{{ image.path }}" /></a>
     {% endfor %}
+</div>
+-->
+
+{% assign feed = site.data.instagram_feed %}
+<div class="instagram-feed">
+  {% for post in feed.data %}
+    <a href="{{ post.permalink }}" target="_blank">
+      <img src="{{ post.media_url }}" alt="{{ post.caption | escape }}" />
+    </a>
+  {% endfor %}
 </div>
