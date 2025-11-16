@@ -1,29 +1,23 @@
 :root {
-  --bg-color: #fcf4e4;
-
+  --bg-gradient: linear-gradient(180deg, #fff8e7, #ffd6e0, #dbe7ff);
   --border-radius: 8px;
   --border-radius-large: 8px;
   --border-radius-xl: 12px;
 }
-
+:root {
+}
 body {
-background: var(--bg-color)
+  background: var(--bg-gradient);
 }
 
 .gallery-container {
   text-align: center;
   margin: auto;
-  width: 80%;
-}
-
-@media (min-width: 720px) {
-  .gallery-container {
-    text-align: center;
-  }
+  width: 90%;
 }
 
 .gallery-image {
-  margin: 2px;
+  margin: 4px;
   border-radius: var(--border-radius);
 }
 
@@ -31,8 +25,10 @@ img {
   object-fit: cover;
   width: 200px;
   height: 200px;
+  border-radius: var(--border-radius);
 }
 
-img a {
-  margin: 0 auto;
+.gallery-container a {
+  text-decoration: none;
+  color: inherit;
 }
