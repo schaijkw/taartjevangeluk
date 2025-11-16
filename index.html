@@ -12,9 +12,9 @@ title: Taartje van Geluk
 -->
 
 {% assign feed = site.data.instagram_feed %}
-<div class="instagram-feed">
+<div class="gallery-container">
   {% for post in feed.data %}
-    <a href="{{ post.permalink }}" target="_blank">
+    <a href="{{ post.permalink }}" data-lightbox="taartjevangeluk">
       <img src="{{ post.media_url }}" alt="{{ post.caption | escape }}" />
     </a>
   {% endfor %}
