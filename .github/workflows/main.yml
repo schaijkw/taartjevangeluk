@@ -23,17 +23,16 @@ jobs:
             echo "Token refresh failed!"
             exit 1
           fi
-      
           echo "Token refreshed successfully."
       
-          NEXT_URL="https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink,media_type&access_token=$NEW_TOKEN"
+          NEXT_URL="https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink,media_type,timestamp&access_token=$NEW_TOKEN"
           ALL_MEDIA='[]'
           
           while [ -n "$NEXT_URL" ]; do
             echo "Fetching page..."
             RESPONSE=$(curl -s "$NEXT_URL")
       
-            # Extract only IMAGE posts and add tags array
+            # Extract only IMAGE posts, add tags array, keep timestamp
             IMAGES=$(echo "$RESPONSE" | jq '[.data[] 
               | select(.media_type=="IMAGE") 
               | . + {tags: ((.caption // "" | scan("#[A-Za-z0-9_]+")))} ]')
@@ -45,9 +44,12 @@ jobs:
             NEXT_URL=$(echo "$RESPONSE" | jq -r '.paging.next // empty')
           done
       
-          # Deduplicate by id and wrap in {data: ...}
-          echo "$ALL_MEDIA" | jq '{data: (unique_by(.id))}' > _data/instagram_feed.json
-          echo "Instagram feed saved with all pages (deduplicated, flat array)."
+          # Deduplicate by id and sort by timestamp descending
+          echo "$ALL_MEDIA" \
+            | jq '{data: (unique_by(.id) | sort_by(.timestamp) | reverse)}' \
+            > _data/instagram_feed.json
+      
+          echo "Instagram feed saved with all pages (deduplicated, ordered by date)."
       
       - name: Commit feed file
         uses: EndBug/add-and-commit@v9
