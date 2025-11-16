@@ -15,7 +15,7 @@ title: Taartje van Geluk
 <div class="gallery-container">
   {% for post in feed.data %}
     <a href="{{ post.permalink }}" data-lightbox="taartjevangeluk">
-      <img src="{{ post.media_url }}" alt="{{ post.caption | escape }}" />
+      <img src="{{ post.media_url }}" class="gallery-image" alt="{{ post.caption | escape }}" />
     </a>
   {% endfor %}
 </div>
