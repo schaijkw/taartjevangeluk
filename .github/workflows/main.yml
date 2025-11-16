@@ -26,7 +26,6 @@ jobs:
       
           echo "Token refreshed successfully."
       
-          # Start paging loop
           NEXT_URL="https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink,media_type&access_token=$NEW_TOKEN"
           ALL_MEDIA='[]'
           
@@ -46,9 +45,9 @@ jobs:
             NEXT_URL=$(echo "$RESPONSE" | jq -r '.paging.next // empty')
           done
       
-          # Save final feed JSON with deduplication by id
-          echo "$ALL_MEDIA" | jq '{data: [.data | unique_by(.id)]}' > _data/instagram_feed.json
-          echo "Instagram feed saved with all pages (deduplicated)."
+          # Deduplicate by id and wrap in {data: ...}
+          echo "$ALL_MEDIA" | jq '{data: (unique_by(.id))}' > _data/instagram_feed.json
+          echo "Instagram feed saved with all pages (deduplicated, flat array)."
       
       - name: Commit feed file
         uses: EndBug/add-and-commit@v9
