@@ -11,24 +11,46 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-              
+                    
       - name: Refresh Instagram Token & save media
         run: |
+          # Refresh the long-lived token (do not log the token itself)
           RESPONSE=$(curl -s "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${{ secrets.INSTAGRAM_TOKEN }}")
-          echo "Refresh response: $RESPONSE"
-          NEW_TOKEN=$(echo $RESPONSE | jq -r '.access_token')
+          NEW_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
       
           # Check if token is empty
-          if [ -z "$NEW_TOKEN" ]; then
-            echo "No new token received!"
+          if [ -z "$NEW_TOKEN" ] || [ "$NEW_TOKEN" = "null" ]; then
+            echo "Token refresh failed!"
             exit 1
           fi
       
-          MEDIA=$(curl -s "https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink&access_token=$NEW_TOKEN")
-          echo "Media response: $MEDIA"
+          echo "Token refreshed successfully."
       
-          echo "$MEDIA" | jq '.' > _data/instagram_feed.json
-                   
+          # Start paging loop
+          NEXT_URL="https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink,media_type&access_token=$NEW_TOKEN"
+          ALL_MEDIA='{"data":[]}'
+          
+          while [ -n "$NEXT_URL" ]; do
+            echo "Fetching page..."
+            RESPONSE=$(curl -s "$NEXT_URL")
+      
+            # Extract only IMAGE posts and add tags array
+            IMAGES=$(echo "$RESPONSE" | jq '{data: [.data[] 
+              | select(.media_type=="IMAGE") 
+              | . + {tags: ((.caption // "" | scan("#[A-Za-z0-9_]+")))} ]}')
+      
+            # Merge into ALL_MEDIA
+            ALL_MEDIA=$(jq -s '{data: (.[0].data + .[1].data)}' \
+              <(echo "$ALL_MEDIA") <(echo "$IMAGES"))
+      
+            # Get next page URL
+            NEXT_URL=$(echo "$RESPONSE" | jq -r '.paging.next // empty')
+          done
+      
+          # Save final feed JSON
+          echo "$ALL_MEDIA" | jq '.' > _data/instagram_feed.json
+          echo "Instagram feed saved with all pages."
+      
       - name: Commit feed file
         uses: EndBug/add-and-commit@v9
         with:
