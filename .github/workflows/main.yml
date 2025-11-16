@@ -17,9 +17,10 @@ jobs:
           RESPONSE=$(curl -s "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${{ secrets.INSTAGRAM_TOKEN }}")
           echo "Response: $RESPONSE"
           NEW_TOKEN=$(echo $RESPONSE | jq -r '.access_token')
-          
-          # Save token to a JSON file for Jekyll
-          echo "{\"access_token\":\"$NEW_TOKEN\"}" > instagram_token.json
+
+          # Fetch feed using refreshed token
+          MEDIA=$(curl -s "https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink&access_token=$NEW_TOKEN")
+          echo $MEDIA > _data/instagram_feed.json
           
       - name: Commit token file
         uses: EndBug/add-and-commit@v9
@@ -28,11 +29,6 @@ jobs:
           message: 'Update Instagram token'
           default_author: github_actions
           
-      - name: Fetch Instagram Media
-        run: |
-          TOKEN=$(jq -r '.access_token' instagram_token.json)
-          MEDIA=$(curl -s "https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink&access_token=$TOKEN")
-          echo $MEDIA > instagram_feed.json
       - name: Commit feed file
         uses: EndBug/add-and-commit@v9
         with:
