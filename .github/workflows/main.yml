@@ -11,16 +11,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+              
       - name: Refresh Instagram Token & save media
         run: |
           RESPONSE=$(curl -s "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${{ secrets.INSTAGRAM_TOKEN }}")
-          echo "Response: $RESPONSE"
+          echo "Refresh response: $RESPONSE"
           NEW_TOKEN=$(echo $RESPONSE | jq -r '.access_token')
-
-          # Fetch feed using refreshed token
-          MEDIA=$(curl -s "https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink&access_token=$NEW_TOKEN") | jq '.' 
-          echo $MEDIA > _data/instagram_feed.json
+      
+          # Check if token is empty
+          if [ -z "$NEW_TOKEN" ]; then
+            echo "No new token received!"
+            exit 1
+          fi
+      
+          MEDIA=$(curl -s "https://graph.instagram.com/me/media?fields=id,caption,media_url,permalink&access_token=$NEW_TOKEN")
+          echo "Media response: $MEDIA"
+      
+          echo "$MEDIA" | jq '.' > _data/instagram_feed.json
                    
       - name: Commit feed file
         uses: EndBug/add-and-commit@v9
