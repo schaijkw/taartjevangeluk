@@ -2,6 +2,8 @@
 layout: default
 title: Taartje van Geluk
 ---
+
+{% comment %}
 <!-- 
 <div class="gallery-container"> 
     {% assign image_files = site.static_files | where_exp: "image", "image.path contains 'images/thumb'" %}
@@ -10,11 +12,14 @@ title: Taartje van Geluk
     {% endfor %}
 </div>
 -->
+{% endcomment %}
 
 {% assign feed = site.data.instagram_feed %}
 <div class="gallery-container">
   {% for post in feed.data %}
-    <a href="{{ post.media_url }}" data-lightbox="taartjevangeluk">
+    <a href="{{ post.media_url }}" 
+        data-lightbox="taartjevangeluk"
+        data-title="{{ post.caption | escape }}">
       <img src="{{ post.media_url }}" class="gallery-image" alt="{{ post.caption | escape }}" />
     </a>
   {% endfor %}
