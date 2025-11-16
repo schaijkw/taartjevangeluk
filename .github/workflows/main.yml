@@ -47,9 +47,9 @@ jobs:
             NEXT_URL=$(echo "$RESPONSE" | jq -r '.paging.next // empty')
           done
       
-          # Save final feed JSON
-          echo "$ALL_MEDIA" | jq '.' > _data/instagram_feed.json
-          echo "Instagram feed saved with all pages."
+          # Save final feed JSON with deduplication by id
+          echo "$ALL_MEDIA" | jq '{data: [.data | unique_by(.id)]}' > _data/instagram_feed.json
+          echo "Instagram feed saved with all pages (deduplicated)."
       
       - name: Commit feed file
         uses: EndBug/add-and-commit@v9
